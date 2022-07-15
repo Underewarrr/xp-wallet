@@ -1,3 +1,5 @@
+import logo from './styles/img/xp-inc-gray-white.png';
+
 export default function Login(props) {
     return (
         <div className="login-page">
