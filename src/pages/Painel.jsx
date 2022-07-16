@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useHistory, Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Accordion from 'react-bootstrap/Accordion';
@@ -55,7 +55,26 @@ const stockMarket = [
     const [stockUserList, setStockUserList] = useState([]);
     const history = useHistory();
 
-   
+    
+    useEffect(() => {
+        const stockUserList = JSON.parse(localStorage.getItem('stockUserList'));
+        if (stockUserList) {
+          setStockUserList(stockUserList);
+        }
+      }, []);
+    function renderStockUserListLocal() {
+        console.log('stockUserList', stockUserList);
+        return stockUserList.map(stockUser => (
+            <tr key={stockUser.id}>
+                <td>{stockUser.name}</td>
+                <td>{stockUser.price}</td>
+                <td>{stockUser.volume}</td>
+                <td>{stockUser.buy}</td>
+                <td>{stockUser.sell}</td>
+            </tr>
+        ))
+    }
+
     function buyStock(stockMarket) {
         if (stockUserList.length === 0) {
             setStockUserList([...stockUserList, stockMarket]);
@@ -107,17 +126,7 @@ const stockMarket = [
         </tr>
       </thead>
       <tbody>
-        {stockUserList.map(stock => (
-            <tr key={stock.id}>
-                <td>{stock.id}</td>
-                <td>{stock.name}</td>
-                <td>{stock.volume}</td>
-                <td>{stock.price}</td>
-                <td>
-                    <Button onClick={() => sellStock(stock)}>Vender</Button>
-                </td>
-            </tr>
-        ))}
+        {renderStockUserListLocal()}
 
       </tbody>
     </Table>
@@ -146,7 +155,7 @@ const stockMarket = [
                     <td>{stock.volume}</td>
                     <td>{stock.price}</td>
                     <td>
-                        <Button onClick={() => buyStock(stock)}>
+                        <Button onClick={buyStock}>
                             
                             <Link to={`/painel/investimentos/comprar/${stock.id}${stock.volume}`} >Comprar</Link>
                             
