@@ -22,6 +22,7 @@ export default function Login(props) {
     e.preventDefault();
     const { history } = props;
     history.push('/painel');
+    localStorage.setItem('userEmail', email);
     }
     return (
         <Form>
@@ -52,17 +53,10 @@ export default function Login(props) {
             type="password" 
             placeholder="Senha" />
           </Form.Group>
-        <Form.Group 
-            className="mb-3" 
-            controlId="formBasicCheckbox">
-          <Form.Check 
-            type="checkbox" 
-            label="Salvar usuario" />
-        </Form.Group>
         <Button 
             onClick={ handleLogin }
             disabled={buttonDisabled()}
-            variant="primary" 
+            variant="secondary" 
             type="submit">
                 Acessar
         </Button>
