@@ -36,7 +36,6 @@ const AvaliableStock =
     const [stocks, setStocks] = useState(AvaliableStock);
 
     const [userStocks, setUserStocks] = useState([]);
-    const [newUserStocks, setNewUserStocks] = useState([]);
 
     const handleBuy = (stock) => {
         // Save in userStocks And Local Storage

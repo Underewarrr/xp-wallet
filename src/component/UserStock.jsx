@@ -17,27 +17,7 @@ const [userStocks, setUserStocks] = useState([]);
         }
     }
         , []);
-    useEffect(() => {
-        const stock = JSON.parse(localStorage.getItem('newUserStocks'));
-        if (stock) {
-            setNewUserStocks(stock);
-        }
-    }
-        , []);
-    useEffect(() => {
-        const stocks = JSON.parse(localStorage.getItem('stocks'));
-        if (stocks) {
-            setNewUserStocks(stocks);
-        }
-    }
-        , []);
-    useEffect(() => {
-        const newUserStocks = JSON.parse(localStorage.getItem('newUserStocks'));
-        if (newUserStocks) {
-            setNewUserStocks(newUserStocks);
-        }
-    }
-        , []);
+    
     const handleRemoveUserStocks = (userStocks) => {
         const newUserStocks = [...userStocks, setNewUserStocks];
         setUserStocks(newUserStocks);
