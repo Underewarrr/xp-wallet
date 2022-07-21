@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import Table from 'react-bootstrap/Table'
 import Accordion from 'react-bootstrap/Accordion'
 import Button from 'react-bootstrap/Button'
+import { FaArrowAltCircleDown, FaArrowAltCircleRight, FaArrowAltCircleUp } from 'react-icons/fa'
 
 const MarketStock = props => {
 const AvaliableStock = 
@@ -12,7 +13,7 @@ const AvaliableStock =
         id: 1,
         name: 'Apple',
         quantity: 10,
-        value: 10.00,
+        value: 350.00,
         sell: 'vender',
         buy: 'comprar'
     },
@@ -20,7 +21,7 @@ const AvaliableStock =
         id: 2,
         name: 'Google',
         quantity: 10,
-        value: 10.00,
+        value: 350.00,
         sell: 'vender',
         buy: 'comprar'
     },
@@ -28,7 +29,7 @@ const AvaliableStock =
         id: 3,
         name: 'Facebook',
         quantity: 10,
-        value: 10.00,
+        value: 350.00,
         sell: 'vender',
         buy: 'comprar'
     }
@@ -61,7 +62,9 @@ const AvaliableStock =
           <th>Nome</th>
           <th>Quantidade</th>
           <th>Valor</th>          
-          <th>Negociar</th>
+          <th
+          className='btn-group-main'
+          >Negociar</th>
         </tr>
       </thead>
       <tbody>
@@ -72,21 +75,36 @@ const AvaliableStock =
             <td>{stock.quantity}</td>
             <td>{stock.value}</td>
             <td>
+              <div className="btn-group">
                 <Button
-                onClick={() => handleBuy(stock)}
-                variant="secondary"
+                variant="outline-success"
                 >
-                    <Link to={`/painel/investimentos/comprar/${stock.id}`}>
+                    <FaArrowAltCircleUp />
+                    <Link 
+                    
+                    onClick={() => handleBuy(stock)}
+                    style={{color: 'darkgrey'}}
+                    to={`/painel/investimentos/comprar/${stock.id}`}>
                 {stock.buy}
             </Link></Button>
                     
                 {' '}
                 <Button
-                variant="secondary"
-                ><Link to={`/painel/investimentos/vender/${stock.id}`}>
+                
+                variant="outline-danger"
+
+                >
+                  <FaArrowAltCircleDown />
+                  <Link 
+                style={{color: 'darkgrey'}}
+                
+                to={`/painel/investimentos/vender/${stock.id}`}>
                 {stock.sell}
-            </Link></Button>
-               
+                
+            
+            </Link>
+            </Button>
+               </div>
             </td>
         </tr>
         ))}
