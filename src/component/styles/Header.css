@@ -1,0 +1,14 @@
+@media (max-width: 489.98px) 
+{
+    #userEmail
+    {
+        display: none;
+    }
+    
+    .btn-group
+    {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}

@@ -5,7 +5,7 @@ import store from './redux/store/index';
 import Login from './pages/Login';
 import Painel from './pages/Painel';
 import Balance from './pages/Balance';
-import BuyStock from './pages/BuyStock';
+import BuyStock from './component/BuyStock';
 
 function App() {
 

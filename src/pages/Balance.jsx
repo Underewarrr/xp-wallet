@@ -6,6 +6,7 @@ import Alert from 'react-bootstrap/Alert';
 import { FaArrowAltCircleLeft, FaArrowAltCircleDown } from 'react-icons/fa'
 import { FaTrashAlt, FaMoneyBill, FaBroom } from 'react-icons/fa';
 import Header from '../component/Header';
+import Link from 'react-router-dom/Link';
 
 const Balance = props => {
 
@@ -151,7 +152,11 @@ const Balance = props => {
                     Você não tem saldo para remover.
                 </p>
             </Alert>
-        </div>
+        </div> <Link 
+                style={ { color: 'black' } }
+                to="/painel/">
+                    <FaArrowAltCircleLeft />
+                </Link>
                                         <h3
                                         className="text-muted"
                                         >Saldo : <em>R$ {userBalance.toFixed(2)}</em></h3>
@@ -161,33 +166,23 @@ const Balance = props => {
             <input type="number" className="form-control" placeholder="Valor" />
             <Button
             onClick={() => userAddBalance(parseInt(document.getElementsByTagName('input')[0].value))}
-            variant="secondary" size="lg">
+            variant="outline-secondary" size="lg">
                 Adicionar <FaMoneyBill />
             </Button>
             <Button
             onClick={() => userRemoveBalance(parseInt(document.getElementsByTagName('input')[0].value))}
-            variant="secondary" size="lg">
+            variant="outline-secondary" size="lg">
                 Remover <FaTrashAlt />
             </Button>
             <Button
             onClick={userClearBalance}
-            variant="secondary" size="lg">
+            variant="outline-secondary" size="lg">
                 Limpar <FaBroom />
             </Button>
         </div>
         
                                     </div>
                                 </div>
-                       <center>
-                            <Button
-                                onClick={() => props.history.push('/painel')}
-                            variant="primary" size="lg">
-                                Voltar <FaArrowAltCircleLeft />
-                                <i>
-                                </i>
-                            </Button>
-
-                       </center>
                              </div>
                         </div>
                     </div>
