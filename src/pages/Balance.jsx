@@ -183,7 +183,7 @@ const Balance = props => {
         
                                     </div>
                                 </div>
-                             </div>
+                            </div>
                         </div>
                     </div>
                 </div>

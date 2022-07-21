@@ -8,7 +8,8 @@ import { useState } from 'react';
 import Header from './Header'
 import { FaArrowAltCircleRight, FaArrowAltCircleUp } from 'react-icons/fa'
 import Alert from 'react-bootstrap/Alert';
-import { FaArrowAltCircleLeft, FaArrowAltCircleDown } from 'react-icons/fa';
+import { FaArrowAltCircleLeft, FaArrowAltCircleDown, FaMoneyBillAlt } from 'react-icons/fa';
+
 
 const BuyStock = props => {
     const [userStocks, setUserStocks] = useState([]);
@@ -16,14 +17,6 @@ const BuyStock = props => {
     const [userQuantityToBuy, setUserQuantityToBuy] = useState(0);
     const [userPriceToBuy, setUserPriceToBuy] = useState(0);
 
-    const [alert4, setAlert4] = useState(false);
-    const [alert5, setAlert5] = useState(false);
-
-    function userCloseAlert() {
-
-        alert4(false);
-        alert5(false);
-    }
             // Get userStocks from Local Storage
         useEffect(() => {
             const userStocks = JSON.parse(localStorage.getItem('userStocks'));
@@ -43,26 +36,20 @@ const BuyStock = props => {
 
         
         function handleUserInputQuantityToBuy(e) {
-            if (userBalance < e.target.value) {
-                setAlert4(true);
-                setTimeout(() => {
-                    setAlert4(false);
-                }
-                , 3000);
-            
-            }
-            
-            else {
-                const newUserStocks = [...userStocks];
+           
+            const newUserStocks = [...userStocks];
             const index = userStocks.findIndex(stock => stock.id === stock.id);
+            // Update Quantity to buy
             const userQuantityToBuy = e.target.value;
-            setUserQuantityToBuy(userQuantityToBuy);
-            console.log('userQuantityToBuy', userQuantityToBuy);
+                newUserStocks[index].quantity = userQuantityToBuy;
+                    setUserStocks(newUserStocks);
+                    setUserQuantityToBuy(userQuantityToBuy);
+                        console.log('userQuantityToBuy', userQuantityToBuy);
+                    // Update Price to buy
             const stockValue = userQuantityToBuy * userStocks[index].value;
-            console.log('stockValue', stockValue);
-            setUserPriceToBuy(stockValue);
-            console.log(userBalance)
-            }
+                setUserPriceToBuy(stockValue);
+                    console.log(userBalance)
+            
         }
 
 
@@ -105,18 +92,7 @@ const BuyStock = props => {
          <Card>
             <Card.Header>
                 <Card.Title>
-                <Alert variant="danger" show={alert4} onClose={userCloseAlert} dismissible>
-                        <Alert.Heading>Atenção!</Alert.Heading>
-                        <p>
-                            O saldo é insuficiente para comprar o ativo.
-                        </p>
-                    </Alert>
-                    <Alert variant="warning" show={alert5} onClose={userCloseAlert} dismissible>
-                        <Alert.Heading>Atenção!</Alert.Heading>
-                        <p>
-                            Insira um valor valido para comprar o ativo.
-                        </p>
-                    </Alert>
+               
 
                 </Card.Title>
                 <Link 
