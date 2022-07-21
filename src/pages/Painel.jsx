@@ -27,15 +27,6 @@ const pushToLogout = () => {
                 <div className="card">
                     <div className="card-header">
                         <h4>Painel de investimentos</h4>
-                        {/* Profile Icon  */}
-                        <Button 
-                        onClick={pushToLogout}
-                        className="card-header-icon">
-
-                            Logout <FaArrowAltCircleDown /> 
-                        </Button>
-
-
                     </div>
                     <div className="card-body">
                         <div className="row">
