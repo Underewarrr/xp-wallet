@@ -12,17 +12,14 @@ import { FaArrowAltCircleLeft, FaArrowAltCircleDown } from 'react-icons/fa';
 
 const BuyStock = props => {
     const [userStocks, setUserStocks] = useState([]);
+    const [cartStock, setCartStock] = useState([]);
+
     const [userBalance, setUserBalance] = useState(0);  
     const [userQuantityToBuy, setUserQuantityToBuy] = useState(0);
     const [userPriceToBuy, setUserPriceToBuy] = useState(0);
-
-    const [alert4, setAlert4] = useState(false);
-    const [alert5, setAlert5] = useState(false);
-
+    const [showAlertDanger, setShowAlertDanger] = useState(false);
     function userCloseAlert() {
-
-        alert4(false);
-        alert5(false);
+        setShowAlertDanger(false);
     }
             // Get userStocks from Local Storage
         useEffect(() => {
@@ -43,37 +40,16 @@ const BuyStock = props => {
 
         
         function handleUserInputQuantityToBuy(e) {
-            if (userBalance < e.target.value) {
-                setAlert4(true);
-                setTimeout(() => {
-                    setAlert4(false);
-                }
-                , 3000);
-            
-            }
-            
-            else {
-                const newUserStocks = [...userStocks];
+            const newUserStocks = [...userStocks];
+            console.log('cartStock', cartStock);
             const index = userStocks.findIndex(stock => stock.id === stock.id);
             const userQuantityToBuy = e.target.value;
-            setUserQuantityToBuy(userQuantityToBuy);
-            console.log('userQuantityToBuy', userQuantityToBuy);
+                    setCartStock(newUserStocks);
+                    setUserQuantityToBuy(userQuantityToBuy);
             const stockValue = userQuantityToBuy * userStocks[index].value;
-            console.log('stockValue', stockValue);
-            setUserPriceToBuy(stockValue);
-            console.log(userBalance)
+                setUserPriceToBuy(stockValue);
             }
-        }
 
-
-        function buttonHandleBuy(e) {
-           
-
-            const { name, value } = e.target;
-            const index = userStocks.findIndex(stock => stock.id === stock.id);
-            const newUserStocks = [...userStocks];
-            console.log(userStocks[index].value);
-}
 
 
     function renderCart () {
@@ -105,18 +81,16 @@ const BuyStock = props => {
          <Card>
             <Card.Header>
                 <Card.Title>
-                <Alert variant="danger" show={alert4} onClose={userCloseAlert} dismissible>
-                        <Alert.Heading>Atenção!</Alert.Heading>
-                        <p>
-                            O saldo é insuficiente para comprar o ativo.
-                        </p>
-                    </Alert>
-                    <Alert variant="warning" show={alert5} onClose={userCloseAlert} dismissible>
-                        <Alert.Heading>Atenção!</Alert.Heading>
-                        <p>
-                            Insira um valor valido para comprar o ativo.
-                        </p>
-                    </Alert>
+                <Alert
+            show={showAlertDanger}
+            variant="danger"
+            onClose={userCloseAlert}
+            dismissible>
+                <Alert.Heading>Erro!</Alert.Heading>
+                <p>
+                   Você não tem saldo para comprar este ativo.
+                </p>
+            </Alert>
 
                 </Card.Title>
                 <Link 
@@ -148,18 +122,17 @@ const BuyStock = props => {
                 {userQuantityToBuy > 0 ? renderCart() : null}
                   Insert how many stocks you want to buy
                   {
-                        userStocks.map(stock => (
+                        cartStock.map(stock => (
                             <Form.Group id='input'>
                                 <Form.Label>{stock.name}</Form.Label>
-                                <Form.Control 
-                                id='input'
-                                onChange={handleUserInputQuantityToBuy}
-                                type="number" placeholder="Quantidade" />
                             </Form.Group>
                         ))
-                  }
+                    }
+                    <Form.Control 
+                    id='input'
+                    onChange={handleUserInputQuantityToBuy}
+                    type="number" placeholder="Quantidade" />
                    <Button
-                    onClick={buttonHandleBuy}
                     variant="primary"
                     type="submit">
                     Comprar

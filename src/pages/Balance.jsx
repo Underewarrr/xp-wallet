@@ -195,12 +195,3 @@ const Balance = props => {
 }
 Balance.propTypes = {}
 export default Balance;
-// Language: javascript
-// Path: src/pages/Balance.jsx
-// Compare this snippet from src/pages/Painel.jsx:
-// import React from 'react'
-// import PropTypes from 'prop-types'
-// import Button from 'react-bootstrap/Button'
-// import UserStock from '../component/UserStock'
-// import MarketStock from '../component/MarketStock'
-//
