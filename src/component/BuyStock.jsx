@@ -92,31 +92,11 @@ const BuyStock = props => {
                 buyedStock.splice(0, 1);
                 
             }
+            const newUserBalance = userBalance - userPriceToBuy;
+            localStorage.setItem('userBalance', JSON.stringify(newUserBalance));
         }
 
-    function renderCart () {
-        return (
-            <div>
-                <Table striped bordered hover>
-                    <thead>
-                        <tr>
-                            <th>Quantidade Total</th>
-                            <th>Valor Total </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{userQuantityToBuy}</td>
-                            <td>{userPriceToBuy.toFixed(2)}
-                            </td>
-                        </tr>
-                    </tbody>
-                </Table>
-                
-            </div>
-                
-        )
-    }
+    
     return (
        <>
          <Header />
@@ -171,29 +151,31 @@ const BuyStock = props => {
                         ))}
                     </tbody>
                 </Table>
-                {userQuantityToBuy > 0 ? renderCart() : null}
-                  Insert how many stocks you want to buy
-                  {
-                        cartStock.map(stock => (
-                            <Form.Group id='input'>
-                                <Form.Label>{stock.name}</Form.Label>
-                            </Form.Group>
+                  Insira quantas ações deseja comprar:
+
+                        {userStocks.map(stock => (
+                            <Card>
+                                <Card.Body>
+                                    <Card.Title>{stock.name}</Card.Title>
+                                    <Card.Text>
+                                        Quantidade: {userQuantityToBuy}
+                                    </Card.Text>
+                                    <Card.Text>
+                                        Valor: {userPriceToBuy.toFixed(2)}
+                                    </Card.Text>
+                                    <Form.Control type="number" placeholder="Quantidade" onChange={handleUserInputQuantityToBuy} />
+                                    <center><Button 
+                                    
+                                    variant="outline-success" onClick={buyStock}>Comprar
+                                     <FaArrowAltCircleUp 
+                                     style={ { color: 'green' } }
+                                     />
+                                    </Button>
+                                    </center>
+                                </Card.Body>
+                            </Card>
                         ))
                     }
-                    
-                    <Form.Control 
-                    id='input'
-                    onChange={handleUserInputQuantityToBuy}
-                    type="number" placeholder="Quantidade" />
-                   <Button
-                     onClick={buyStock} 
-                    variant="primary"
-                    type="submit">
-                    Comprar
-                </Button>
-
-
-               
             </Card.Body>
         </Card>
 
