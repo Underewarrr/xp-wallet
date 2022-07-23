@@ -13,11 +13,14 @@ import { FaArrowAltCircleLeft, FaArrowAltCircleDown } from 'react-icons/fa';
 const BuyStock = props => {
     const [userStocks, setUserStocks] = useState([]);
     const [cartStock, setCartStock] = useState([]);
+    const [buyedStock, setBuyedStock] = useState([]);
 
     const [userBalance, setUserBalance] = useState(0);  
     const [userQuantityToBuy, setUserQuantityToBuy] = useState(0);
     const [userPriceToBuy, setUserPriceToBuy] = useState(0);
     const [showAlertDanger, setShowAlertDanger] = useState(false);
+    const [showAlertSuccess, setShowAlertSuccess] = useState(false);
+
     function userCloseAlert() {
         setShowAlertDanger(false);
     }
@@ -37,7 +40,7 @@ const BuyStock = props => {
             }
         }
         , []);
-
+        
         
         function handleUserInputQuantityToBuy(e) {
             const newUserStocks = [...userStocks];
@@ -49,8 +52,37 @@ const BuyStock = props => {
             const stockValue = userQuantityToBuy * userStocks[index].value;
                 setUserPriceToBuy(stockValue);
             }
-
-
+        function buyStock () {   
+            if (userBalance < userPriceToBuy) {
+                setShowAlertDanger(true);
+                    setTimeout(() => {
+                        setShowAlertDanger(false);
+                    }
+                    , 3000);
+            }
+            else {
+                const newUserBalance = userBalance - userPriceToBuy;
+                const newCartStock = [...cartStock];
+                const index = userStocks.findIndex(stock => stock.id === stock.id);
+                const stockValue = userQuantityToBuy * userStocks[index].value;
+                const newStock = {
+                    id: userStocks[index].id,
+                    name: userStocks[index].name,
+                    quantity: userQuantityToBuy,
+                    value: stockValue,
+                    sell: userStocks[index].sell,
+                    buy: userStocks[index].buy
+                }
+                setShowAlertSuccess(true);
+                setUserBalance(newUserBalance);
+                setCartStock(newCartStock);
+                setBuyedStock(newStock);
+                console.log('cartStock', cartStock);
+                localStorage.setItem('userBalance', JSON.stringify(newUserBalance));
+                localStorage.setItem('buyedStock', JSON.stringify([newStock]));
+                
+            }
+        }
 
     function renderCart () {
         return (
@@ -82,6 +114,16 @@ const BuyStock = props => {
             <Card.Header>
                 <Card.Title>
                 <Alert
+            show={showAlertSuccess}
+            variant="success"
+            onClose={userCloseAlert}
+            dismissible>
+                <Alert.Heading>Sucesso!</Alert.Heading>
+                <p>
+                    Você comprou o ativo com sucesso!
+                </p>
+            </Alert>
+                <Alert
             show={showAlertDanger}
             variant="danger"
             onClose={userCloseAlert}
@@ -110,7 +152,7 @@ const BuyStock = props => {
                         </tr>
                     </thead>
                     <tbody>
-                        {userStocks.map(stock => (
+                        {cartStock.map(stock => (
                             <tr key={stock.id}>
                                 <td>{stock.name}</td>
                                 <td>{stock.quantity}</td>
@@ -133,6 +175,7 @@ const BuyStock = props => {
                     onChange={handleUserInputQuantityToBuy}
                     type="number" placeholder="Quantidade" />
                    <Button
+                     onClick={buyStock} 
                     variant="primary"
                     type="submit">
                     Comprar

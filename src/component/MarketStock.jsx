@@ -42,7 +42,7 @@ const AvaliableStock =
         // Save in userStocks And Local Storage
         const newUserStocks = [...userStocks, stock];
         setUserStocks(newUserStocks);
-        localStorage.setItem('userStocks', JSON.stringify(newUserStocks));
+        localStorage.setItem('cartStock', JSON.stringify(newUserStocks));
         console.log(newUserStocks);
         // Remove from stocks
         const newStocks = stocks.filter(s => s.id !== stock.id);
