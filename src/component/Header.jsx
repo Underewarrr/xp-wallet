@@ -71,6 +71,11 @@ function pushToLogout () {
       <Navbar.Collapse className="justify-content-end">
         <Navbar.Text>
           <FaUserCircle 
+          onClick={
+            () => {
+              window.location.href = '/painel/perfil';
+            }
+          }
           style={{ color: 'black', cursor: 'pointer' }}
           /> <p
           className='text-muted'
