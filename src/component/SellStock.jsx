@@ -8,7 +8,7 @@ const SellStock = props => {
     const [buyedStock, setBuyedStock] = useState([]);
     const [userBalance, setUserBalance] = useState(0);  
     const [cartStock, setCartStock] = useState([]);
-    const [userQuantityToSell, setUserQuantityToSell] = useState(0);
+    const [userQuantityToSell, setUserQuantityToSell] = useState(buyedStock.reduce((acc, stock) => acc + stock.value, 0));
     const [userPriceToSell, setUserPriceToSell] = useState(0);
     const [showAlertDanger, setShowAlertDanger] = useState(false);
     const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -45,25 +45,32 @@ const SellStock = props => {
         console.log('cartStock', cartStock);
         }
     function handleSell() {
-        const newUserStocks = [...buyedStock];
-        const index = buyedStock.findIndex(stock => stock.id === stock.id);
-        const userQuantityToSell = buyedStock[index].quantity;
-        const userPriceToSell = buyedStock[index].value;
-        const stockValue = userPriceToSell * userQuantityToSell;
-        const newUserBalance = userBalance + stockValue;
-        localStorage.setItem('userBalance', newUserBalance);
-        localStorage.setItem('buyedStock', JSON.stringify([
-            ...buyedStock.slice(0, index),
+        if (userQuantityToSell > buyedStock.quantity) {
+            setShowAlertDanger(true);
+        }
+        else {
+            const totalValue = userBalance + buyedStock.reduce((acc, stock) => acc + stock.value, 0)
+            const newUserBalance = userBalance + totalValue;
+            console.log('userBalance', userBalance)
+            console.log(userPriceToSell)
+            const newUserStocks = [...buyedStock]; 
+            const index = buyedStock.findIndex(stock => stock.id === stock.id);
+            newUserStocks[index].quantity = newUserStocks[index].quantity - userQuantityToSell;
+            setUserBalance(newUserBalance);
+            setBuyedStock(newUserStocks);
+            setShowAlertSuccess(true);
+                setTimeout(() => {
+                    setShowAlertSuccess(false);
+                }
+                , 3000);
 
-        ]));
-        setUserBalance(newUserBalance);
-        setUserQuantityToSell(userQuantityToSell);
-        setUserPriceToSell(userPriceToSell);
-        setCartStock(newUserStocks);
-        setShowAlertSuccess(true);
-        setShowAlertDanger(false);
+            // remove userStock.id from buyedStock.id
+            newUserStocks.splice(index, 1);
+            localStorage.setItem('buyedStock', JSON.stringify(newUserStocks));
+            localStorage.setItem('userBalance', JSON.stringify(newUserBalance));
+        }
     }
-
+    
     
   return (
     <>
@@ -82,7 +89,8 @@ const SellStock = props => {
                     </thead>
                     <tbody>
                         {buyedStock.map(stock => (
-                            <tr key={stock.id}>
+                            <tr 
+                            key={stock.id}>
                                 <td>{stock.name}</td>
                                 <td>{stock.quantity}</td>
                                 <td>{stock.value}</td>
@@ -91,6 +99,18 @@ const SellStock = props => {
                     </tbody>
                 </Table>
             </Card.Text>: <></>}
+            <div className="alert alert-success" role="alert" style={{ display: showAlertSuccess ? 'block' : 'none' }}>
+        Ações vendidas com sucesso!
+        <button type="button" className="close" onClick={userCloseAlert}>
+
+        </button>
+    </div>
+    <div className="alert alert-danger" role="alert" style={{ display: showAlertDanger ? 'block' : 'none' }}>
+        Erro ao vender ações!
+        <button type="button" className="close" onClick={userCloseAlert}>
+            
+        </button>
+    </div>
         </Card.Header>
         <Card.Body>
             {buyedStock.length > 0 ?  <Card.Text>
@@ -117,22 +137,10 @@ const SellStock = props => {
             {buyedStock.length > 0 ?  <Card.Text>
                 <Button variant="primary" onClick={() => handleSell()}>Vender
                 </Button>
-    <input type="number" placeholder="Quantidade" onChange={handleUserInputQuantityToSell} />
             </Card.Text>: <></>}
         </Card.Footer>
     </Card>
-    <div className="alert alert-success" role="alert" style={{ display: showAlertSuccess ? 'block' : 'none' }}>
-        Ações vendidas com sucesso!
-        <button type="button" className="close" onClick={userCloseAlert}>
-
-        </button>
-    </div>
-    <div className="alert alert-danger" role="alert" style={{ display: showAlertDanger ? 'block' : 'none' }}>
-        Erro ao vender ações!
-        <button type="button" className="close" onClick={userCloseAlert}>
-            
-        </button>
-    </div>
+    
     </>
     )
 }
