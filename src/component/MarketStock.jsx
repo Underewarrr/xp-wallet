@@ -86,8 +86,6 @@ const AvaliableStock =
     const [stocks, setStocks] = useState(AvaliableStock);
 
     const [userStocks, setUserStocks] = useState([]);
-    const [buyedStock, setBuyedStock] = useState([]);
-    const [toSellStock, setToSellStock] = useState([]);
 
     const handleBuy = (stock) => {
         // Save in userStocks And Local Storage
@@ -100,6 +98,14 @@ const AvaliableStock =
         setStocks(newStocks);
         console.log('newArrayuserStocks', newStocks);
     }
+    const handleSell = (stock) => {
+        // Save in userStocks And Local Storage
+        const newUserStocks = [...userStocks, stock];
+        setUserStocks(newUserStocks);
+        console.log('userStocks', newUserStocks);
+        // Remove from stocks
+    }
+
 
   return (
     <Accordion>
@@ -147,7 +153,7 @@ const AvaliableStock =
                 >
                   <FaArrowAltCircleDown />
                   <Link 
-                
+                onClick={() => handleSell(stock)}
                 style={{color: 'darkgrey'}}
                 
                 to={`/painel/investimentos/vender/${stock.id}`}>
