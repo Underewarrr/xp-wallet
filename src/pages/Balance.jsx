@@ -165,7 +165,9 @@ const Balance = props => {
                                     <div className="d-grid gap-2">
             <input type="number" className="form-control" placeholder="Valor" />
             <Button
-            onClick={() => userAddBalance(parseInt(document.getElementsByTagName('input')[0].value))}
+            onClick={
+                () => userAddBalance(parseInt(document.getElementsByTagName('input')[0].value))
+            }
             variant="outline-secondary" size="lg">
                 Adicionar <FaMoneyBill />
             </Button>
