@@ -12,42 +12,93 @@ const AvaliableStock =
     {
         id: 1,
         name: 'Apple',
-        quantity: 10,
+        quantity: 1,
         value: 350.00,
-        sell: 'vender',
-        buy: 'comprar'
+        buy: 'comprar',
+        sell: 'vender'
     },
     {
         id: 2,
         name: 'Google',
-        quantity: 10,
+        quantity: 1,
         value: 350.00,
-        sell: 'vender',
-        buy: 'comprar'
+        buy: 'comprar',
+        sell: 'vender'
     },
     {
         id: 3,
         name: 'Facebook',
-        quantity: 10,
+        quantity: 1,
         value: 350.00,
-        sell: 'vender',
-        buy: 'comprar'
-    }
+        buy: 'comprar',
+        sell: 'vender'
+    },
+    {
+        id: 4,
+        name: 'Twitter',
+        quantity: 1,
+        value: 350.00,
+        buy: 'comprar',
+        sell: 'vender'
+    },
+    {
+        id: 5,
+        name: 'Amazon',
+        quantity: 1,
+        value: 350.00,
+        buy: 'comprar',
+        sell: 'vender'
+    },
+    {
+        id: 6,
+        name: 'Microsoft',
+        quantity: 1,
+        value: 350.00,
+        buy: 'comprar',
+        sell: 'vender'
+    },
+    {
+        id: 7,
+        name: 'Alibaba',
+        quantity: 1,
+        value: 350.00,
+        buy: 'comprar',
+        sell: 'vender'
+    },
+    {
+        id: 8,
+        name: 'Intel',
+        quantity: 1,
+        value: 350.00,
+        buy: 'comprar',
+        sell: 'vender'
+    },
+    {
+        id: 9,
+        name: 'Nvidia',
+        quantity: 1,
+        value: 350.00,
+        buy: 'comprar',
+        sell: 'vender'
+    },
+
 ];
     const [stocks, setStocks] = useState(AvaliableStock);
 
     const [userStocks, setUserStocks] = useState([]);
+    const [buyedStock, setBuyedStock] = useState([]);
+    const [toSellStock, setToSellStock] = useState([]);
 
     const handleBuy = (stock) => {
         // Save in userStocks And Local Storage
         const newUserStocks = [...userStocks, stock];
         setUserStocks(newUserStocks);
-        localStorage.setItem('cartStock', JSON.stringify(newUserStocks));
-        console.log(newUserStocks);
+        localStorage.setItem('userStocks', JSON.stringify(newUserStocks));
+        console.log('userStocks', newUserStocks);
         // Remove from stocks
         const newStocks = stocks.filter(s => s.id !== stock.id);
         setStocks(newStocks);
-        console.log(newStocks);
+        console.log('newArrayuserStocks', newStocks);
     }
 
   return (
@@ -96,9 +147,11 @@ const AvaliableStock =
                 >
                   <FaArrowAltCircleDown />
                   <Link 
+                
                 style={{color: 'darkgrey'}}
                 
                 to={`/painel/investimentos/vender/${stock.id}`}>
+                  
                 {stock.sell}
                 
             
