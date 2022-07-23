@@ -23,6 +23,7 @@ const BuyStock = props => {
 
     function userCloseAlert() {
         setShowAlertDanger(false);
+        setShowAlertSuccess(false);
     }
             // Get userStocks from Local Storage
         useEffect(() => {
@@ -40,6 +41,15 @@ const BuyStock = props => {
             }
         }
         , []);
+            // Get buyedStock from Local Storage
+        useEffect(() => {
+            const buyedStock = JSON.parse(localStorage.getItem('buyedStock'));
+            if (buyedStock) {
+                setBuyedStock(buyedStock);
+            }
+        }
+        , []);
+
         
         
         function handleUserInputQuantityToBuy(e) {
@@ -60,26 +70,26 @@ const BuyStock = props => {
                     }
                     , 3000);
             }
+            // add value to buyedStock in Local Storage value
             else {
-                const newUserBalance = userBalance - userPriceToBuy;
-                const newCartStock = [...cartStock];
-                const index = userStocks.findIndex(stock => stock.id === stock.id);
-                const stockValue = userQuantityToBuy * userStocks[index].value;
-                const newStock = {
-                    id: userStocks[index].id,
-                    name: userStocks[index].name,
-                    quantity: userQuantityToBuy,
-                    value: stockValue,
-                    sell: userStocks[index].sell,
-                    buy: userStocks[index].buy
-                }
                 setShowAlertSuccess(true);
-                setUserBalance(newUserBalance);
-                setCartStock(newCartStock);
-                setBuyedStock(newStock);
-                console.log('cartStock', cartStock);
-                localStorage.setItem('userBalance', JSON.stringify(newUserBalance));
-                localStorage.setItem('buyedStock', JSON.stringify([newStock]));
+                    setTimeout(() => {
+                        setShowAlertSuccess(false);
+                    }
+                    , 3000);
+                    
+                const stock = {
+                    id: cartStock[0].id,
+                    name: cartStock[0].name,
+                    quantity: userQuantityToBuy,
+                    value: userPriceToBuy
+                }
+            const newBuyedStock = [...buyedStock, stock];
+            console.log('buyedStock', buyedStock);
+            setBuyedStock(newBuyedStock);
+                localStorage.setItem('buyedStock', JSON.stringify(newBuyedStock));
+                console.log('buyedStock', newBuyedStock);
+                buyedStock.splice(0, 1);
                 
             }
         }
@@ -152,7 +162,7 @@ const BuyStock = props => {
                         </tr>
                     </thead>
                     <tbody>
-                        {cartStock.map(stock => (
+                        {userStocks.map(stock => (
                             <tr key={stock.id}>
                                 <td>{stock.name}</td>
                                 <td>{stock.quantity}</td>
@@ -170,6 +180,7 @@ const BuyStock = props => {
                             </Form.Group>
                         ))
                     }
+                    
                     <Form.Control 
                     id='input'
                     onChange={handleUserInputQuantityToBuy}
