@@ -34,7 +34,6 @@ const [showAlertSuccess, setshowAlertSuccess] = useState(false);
             <th>Nome</th>
             <th>Quantidade</th>
             <th>Valor</th>          
-            <th>Negociar</th>
           </tr>
         </thead>
         <tbody>
@@ -44,12 +43,6 @@ const [showAlertSuccess, setshowAlertSuccess] = useState(false);
               <td>{stock.name}</td>
               <td>{stock.quantity}</td>
               <td>{stock.value}</td>
-              <td>
-                <Button variant="primary" 
-               >
-                  Deletar
-                </Button>
-              </td>
             </tr>
           ))}
         </tbody>
