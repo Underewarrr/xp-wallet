@@ -71,18 +71,24 @@ const SellStock = props => {
             , 3000);
             console.log('Quantidade de ações que você deseja vender é maior que a quantidade de ações que você possui');
         }
-        else if (buyedStockQuantity.quantity === 0 || buyedStockQuantity.quantity === undefined) {
-            setShowAlertDanger(true);
-            setTimeout(() => {
-                setShowAlertDanger(false);
-            }
-            , 3000);
+        else if (stockQuantity > buyedStock.quantity) {
+          setShowAlertDanger(true);
+          setTimeout(() => {
+            setShowAlertDanger(false);
           }
+          , 3000);
+        }
         else {
+          console.log('reduce', buyedStock.reduce((acc, stock) => acc + stock.quantity, 0))
+         
+          console.log('Quantidade de ações que você deseja vender', stockQuantity,'byedstock', buyedStock.quantity);
             console.log(userQuantityToSell + 'Quantidade de ações que você deseja vender');
             console.log(buyedStockQuantity.quantity)
             // remove 1 quantity from buyedStock with same id as userStock
-            const newBuyedStock = buyedStock.map(stock => {
+            const index = buyedStock.findIndex(stock => stock.id === stock.id);
+            const newBuyedStock = 
+            buyedStock.filter(stock => stock.id === userStocks[index].id)
+            .map(stock => {
                 if (stock.id === stock.id) {
                     stock.quantity = stock.quantity - stockQuantity;
                     stock.value = stock.value - userPriceToSell;
