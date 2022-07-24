@@ -35,8 +35,7 @@ function pushToLogout () {
     localStorage.removeItem('userBalance');
     localStorage.removeItem('userStocks');
     localStorage.removeItem('buyedStock');
-    window.location.reload();
-
+    window.location.href = '/';
 }
   return (
     <Navbar>
@@ -73,10 +72,10 @@ function pushToLogout () {
           onClick={
             () => {
               localStorage.removeItem('userEmail');
-              localStorage.removeItem('userBalance');
-              localStorage.removeItem('userStocks');
-              localStorage.removeItem('buyedStock');
-              window.location.reload();
+    localStorage.removeItem('userBalance');
+    localStorage.removeItem('userStocks');
+    localStorage.removeItem('buyedStock');
+    window.location.reload();
             }
           }
           style={{ color: 'black', cursor: 'pointer' }}
