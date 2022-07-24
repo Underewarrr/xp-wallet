@@ -118,6 +118,11 @@ const SellStock = props => {
           <Card>
              <Card.Header>
                  <Card.Title>
+                 <Link 
+                style={ { color: 'black' } }
+                to="/painel/">
+                    <FaArrowAltCircleLeft />
+                </Link>
                  <Alert
              show={showAlertSuccess}
              variant="success"
