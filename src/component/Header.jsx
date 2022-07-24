@@ -4,7 +4,8 @@ import Navbar from 'react-bootstrap/Navbar';
 import { FaMoneyBillAlt } from 'react-icons/fa';
 import Button from 'react-bootstrap/Button';
 import { FaArrowAltCircleLeft, FaUserCircle } from 'react-icons/fa';
-import { BiLogOutCircle } from 'react-icons/bi';
+import { BiLogOutCircle, BiReset } from 'react-icons/bi';
+
 import './styles/Header.css';
 
 const Header = () => {
@@ -33,7 +34,9 @@ function pushToLogout () {
     localStorage.removeItem('userEmail');
     localStorage.removeItem('userBalance');
     localStorage.removeItem('userStocks');
-    window.location.href = '/';
+    localStorage.removeItem('buyedStock');
+    window.location.reload();
+
 }
   return (
     <Navbar>
@@ -64,13 +67,33 @@ function pushToLogout () {
           }
           style={{ color: 'black', cursor: 'pointer' }}
           />
-           {' '}Saldo R$ {userBalance.toFixed(2)}</p></code>
+           {' '}Saldo R$ {userBalance.toFixed(2)}</p>
+           <p>
+          <BiReset 
+          onClick={
+            () => {
+              localStorage.removeItem('userEmail');
+              localStorage.removeItem('userBalance');
+              localStorage.removeItem('userStocks');
+              localStorage.removeItem('buyedStock');
+              window.location.reload();
+            }
+          }
+          style={{ color: 'black', cursor: 'pointer' }}
+          />
+           {' '}Resetar LocalStorage</p>
+           </code>
           
       </Navbar.Brand>
       <Navbar.Toggle />
       <Navbar.Collapse className="justify-content-end">
         <Navbar.Text>
           <FaUserCircle 
+          onClick={
+            () => {
+              window.location.href = '/painel/perfil';
+            }
+          }
           style={{ color: 'black', cursor: 'pointer' }}
           /> <p
           className='text-muted'

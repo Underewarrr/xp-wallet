@@ -48,7 +48,7 @@ const pushToLogout = () => {
         <div className="d-grid gap-2">
             <Button 
             onClick={pushToDeposit}
-            variant="secondary" size="lg">
+            variant="outline-secondary" size="lg">
                 Deposito/Retirada <FaArrowAltCircleRight />
             </Button>
     </div>

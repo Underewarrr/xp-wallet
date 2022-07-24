@@ -165,7 +165,9 @@ const Balance = props => {
                                     <div className="d-grid gap-2">
             <input type="number" className="form-control" placeholder="Valor" />
             <Button
-            onClick={() => userAddBalance(parseInt(document.getElementsByTagName('input')[0].value))}
+            onClick={
+                () => userAddBalance(parseInt(document.getElementsByTagName('input')[0].value))
+            }
             variant="outline-secondary" size="lg">
                 Adicionar <FaMoneyBill />
             </Button>
@@ -195,12 +197,3 @@ const Balance = props => {
 }
 Balance.propTypes = {}
 export default Balance;
-// Language: javascript
-// Path: src/pages/Balance.jsx
-// Compare this snippet from src/pages/Painel.jsx:
-// import React from 'react'
-// import PropTypes from 'prop-types'
-// import Button from 'react-bootstrap/Button'
-// import UserStock from '../component/UserStock'
-// import MarketStock from '../component/MarketStock'
-//

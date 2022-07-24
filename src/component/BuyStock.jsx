@@ -8,15 +8,23 @@ import { useState } from 'react';
 import Header from './Header'
 import { FaArrowAltCircleRight, FaArrowAltCircleUp } from 'react-icons/fa'
 import Alert from 'react-bootstrap/Alert';
-import { FaArrowAltCircleLeft, FaArrowAltCircleDown, FaMoneyBillAlt } from 'react-icons/fa';
-
+import { FaArrowAltCircleLeft, FaArrowAltCircleDown } from 'react-icons/fa';
 
 const BuyStock = props => {
     const [userStocks, setUserStocks] = useState([]);
+    const [cartStock, setCartStock] = useState([]);
+    const [buyedStock, setBuyedStock] = useState([]);
+
     const [userBalance, setUserBalance] = useState(0);  
     const [userQuantityToBuy, setUserQuantityToBuy] = useState(0);
     const [userPriceToBuy, setUserPriceToBuy] = useState(0);
+    const [showAlertDanger, setShowAlertDanger] = useState(false);
+    const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 
+    function userCloseAlert() {
+        setShowAlertDanger(false);
+        setShowAlertSuccess(false);
+    }
             // Get userStocks from Local Storage
         useEffect(() => {
             const userStocks = JSON.parse(localStorage.getItem('userStocks'));
@@ -33,66 +41,92 @@ const BuyStock = props => {
             }
         }
         , []);
+            // Get buyedStock from Local Storage
+        useEffect(() => {
+            const buyedStock = JSON.parse(localStorage.getItem('buyedStock'));
+            if (buyedStock) {
+                setBuyedStock(buyedStock);
+            }
+        }
+        , []);
 
         
+        
         function handleUserInputQuantityToBuy(e) {
-           
             const newUserStocks = [...userStocks];
+            console.log('cartStock', cartStock);
             const index = userStocks.findIndex(stock => stock.id === stock.id);
-            // Update Quantity to buy
             const userQuantityToBuy = e.target.value;
-                newUserStocks[index].quantity = userQuantityToBuy;
-                    setUserStocks(newUserStocks);
+                    setCartStock(newUserStocks);
                     setUserQuantityToBuy(userQuantityToBuy);
-                        console.log('userQuantityToBuy', userQuantityToBuy);
-                    // Update Price to buy
             const stockValue = userQuantityToBuy * userStocks[index].value;
                 setUserPriceToBuy(stockValue);
-                    console.log(userBalance)
-            
+            }
+        function buyStock () {   
+            if (userBalance < userPriceToBuy) {
+                setShowAlertDanger(true);
+                    setTimeout(() => {
+                        setShowAlertDanger(false);
+                    }
+                    , 3000);
+                    
+            }
+            else {
+            // buy stock update quantity in buyedStock
+            const newBuyedStock = [...buyedStock];
+            const index = userStocks.findIndex(stock => stock.id === stock.id);
+            const newUserBalance = userBalance - userPriceToBuy;
+            const newUserQuantityToBuy = userQuantityToBuy + userStocks[index].quantity;
+            const newUserStocksQuantity = userQuantityToBuy;
+            const newUserStocksValue = userStocks[index].value * userQuantityToBuy;
+            const newUserStocks = [...userStocks];
+            newUserStocks[index].quantity = newUserStocksQuantity;
+            newUserStocks[index].value = newUserStocksValue;
+            newBuyedStock.push(userStocks[index]);
+            setUserStocks(newUserStocks);
+            setUserBalance(newUserBalance);
+            setBuyedStock(newBuyedStock);
+            setUserQuantityToBuy(0);
+            setUserPriceToBuy(0);
+            localStorage.setItem('userStocks', JSON.stringify(newUserStocks));
+            localStorage.setItem('userBalance', JSON.stringify(newUserBalance));
+            localStorage.setItem('buyedStock', JSON.stringify(newBuyedStock));
+            setShowAlertSuccess(true);
+            setTimeout(() => {
+                setShowAlertSuccess(false);
+            }
+            , 3000);
         }
 
+        }
 
-        function buttonHandleBuy(e) {
-           
-
-            const { name, value } = e.target;
-            const index = userStocks.findIndex(stock => stock.id === stock.id);
-            const newUserStocks = [...userStocks];
-            console.log(userStocks[index].value);
-}
-
-
-    function renderCart () {
-        return (
-            <div>
-                <Table striped bordered hover>
-                    <thead>
-                        <tr>
-                            <th>Quantidade Total</th>
-                            <th>Valor Total </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{userQuantityToBuy}</td>
-                            <td>{userPriceToBuy.toFixed(2)}
-                            </td>
-                        </tr>
-                    </tbody>
-                </Table>
-                
-            </div>
-                
-        )
-    }
+    
     return (
        <>
          <Header />
          <Card>
             <Card.Header>
                 <Card.Title>
-               
+                <Alert
+            show={showAlertSuccess}
+            variant="success"
+            onClose={userCloseAlert}
+            dismissible>
+                <Alert.Heading>Sucesso!</Alert.Heading>
+                <p>
+                    Você comprou o ativo com sucesso!
+                </p>
+            </Alert>
+                <Alert
+            show={showAlertDanger}
+            variant="danger"
+            onClose={userCloseAlert}
+            dismissible>
+                <Alert.Heading>Erro!</Alert.Heading>
+                <p>
+                   Você não tem saldo para comprar este ativo.
+                </p>
+            </Alert>
 
                 </Card.Title>
                 <Link 
@@ -121,28 +155,31 @@ const BuyStock = props => {
                         ))}
                     </tbody>
                 </Table>
-                {userQuantityToBuy > 0 ? renderCart() : null}
-                  Insert how many stocks you want to buy
-                  {
-                        userStocks.map(stock => (
-                            <Form.Group id='input'>
-                                <Form.Label>{stock.name}</Form.Label>
-                                <Form.Control 
-                                id='input'
-                                onChange={handleUserInputQuantityToBuy}
-                                type="number" placeholder="Quantidade" />
-                            </Form.Group>
+                  Insira quantas ações deseja comprar:
+
+                        {userStocks.map(stock => (
+                            <Card>
+                                <Card.Body>
+                                    <Card.Title>{stock.name}</Card.Title>
+                                    <Card.Text>
+                                        Quantidade: {userQuantityToBuy}
+                                    </Card.Text>
+                                    <Card.Text>
+                                        Valor: {userPriceToBuy.toFixed(2)}
+                                    </Card.Text>
+                                    <Form.Control type="number" placeholder="Quantidade" onChange={handleUserInputQuantityToBuy} />
+                                    <center><Button 
+                                    
+                                    variant="outline-success" onClick={buyStock}>Comprar
+                                     <FaArrowAltCircleUp 
+                                     style={ { color: 'green' } }
+                                     />
+                                    </Button>
+                                    </center>
+                                </Card.Body>
+                            </Card>
                         ))
-                  }
-                   <Button
-                    onClick={buttonHandleBuy}
-                    variant="primary"
-                    type="submit">
-                    Comprar
-                </Button>
-
-
-               
+                    }
             </Card.Body>
         </Card>
 

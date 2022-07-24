@@ -7,29 +7,18 @@ import Button from 'react-bootstrap/Button'
 const UserStock = props => {
 
     //useEffect to get from local storage
-const [newUserStocks, setNewUserStocks] = useState([]);
-const [userStocks, setUserStocks] = useState([]);
+const [buyedStock, setBuyedStock] = useState([]);
+const [showAlertSuccess, setshowAlertSuccess] = useState(false);
+
 
     useEffect(() => {
-        const userStocks = JSON.parse(localStorage.getItem('userStocks'));
-        if (userStocks) {
-            setNewUserStocks(userStocks);
+        const buyedStock = JSON.parse(localStorage.getItem('buyedStock'));
+        if (buyedStock) {
+          setBuyedStock(buyedStock);
         }
     }
         , []);
-    
-    const handleRemoveUserStocks = (userStocks) => {
-        const newUserStocks = [...userStocks, setNewUserStocks];
-        setUserStocks(newUserStocks);
-        localStorage.setItem('newUserStocks', JSON.stringify(newUserStocks));
-        console.log(newUserStocks);
-        // Remove from stocks
-        const newStocks = newUserStocks.filter(s => s.id !== userStocks.id);
-        setNewUserStocks(newStocks);
-        setNewUserStocks(newUserStocks);
-        console.log(newStocks);
-        
-    }
+
 
 
 
@@ -45,22 +34,15 @@ const [userStocks, setUserStocks] = useState([]);
             <th>Nome</th>
             <th>Quantidade</th>
             <th>Valor</th>          
-            <th>Negociar</th>
           </tr>
         </thead>
         <tbody>
-          {newUserStocks.map(stock => (
+          {buyedStock.map(stock => (
             <tr key={stock.id}>
               <td>{stock.id}</td>
               <td>{stock.name}</td>
               <td>{stock.quantity}</td>
               <td>{stock.value}</td>
-              <td>
-                <Button variant="primary" 
-                onClick={handleRemoveUserStocks}>
-                  Deletar
-                </Button>
-              </td>
             </tr>
           ))}
         </tbody>
