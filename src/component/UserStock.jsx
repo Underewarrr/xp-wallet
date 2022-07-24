@@ -37,13 +37,15 @@ const [showAlertSuccess, setshowAlertSuccess] = useState(false);
           </tr>
         </thead>
         <tbody>
-          {buyedStock.map(stock => (
+         
+          {buyedStock.filter(stock => stock.quantity > 0).map(stock => (
             <tr key={stock.id}>
-              <td>{stock.id}</td>
-              <td>{stock.name}</td>
-              <td>{stock.quantity}</td>
-              <td>{stock.value}</td>
+                <td>{stock.id}</td>
+                <td>{stock.name}</td>
+                <td>{stock.quantity}</td>
+                <td>{stock.value}</td>
             </tr>
+          
           ))}
         </tbody>
       </Table>
