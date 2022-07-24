@@ -12,7 +12,7 @@ const AvaliableStock =
     {
         id: 1,
         name: 'Apple',
-        quantity: 1,
+        quantity: 100000,
         value: 350.00,
         buy: 'comprar',
         sell: 'vender'
@@ -20,7 +20,7 @@ const AvaliableStock =
     {
         id: 2,
         name: 'Google',
-        quantity: 1,
+        quantity: 100000,
         value: 350.00,
         buy: 'comprar',
         sell: 'vender'
@@ -28,7 +28,7 @@ const AvaliableStock =
     {
         id: 3,
         name: 'Facebook',
-        quantity: 1,
+        quantity: 100000,
         value: 350.00,
         buy: 'comprar',
         sell: 'vender'
@@ -36,7 +36,7 @@ const AvaliableStock =
     {
         id: 4,
         name: 'Twitter',
-        quantity: 1,
+        quantity: 100000,
         value: 350.00,
         buy: 'comprar',
         sell: 'vender'
@@ -44,7 +44,7 @@ const AvaliableStock =
     {
         id: 5,
         name: 'Amazon',
-        quantity: 1,
+        quantity: 100000,
         value: 350.00,
         buy: 'comprar',
         sell: 'vender'
@@ -52,7 +52,7 @@ const AvaliableStock =
     {
         id: 6,
         name: 'Microsoft',
-        quantity: 1,
+        quantity: 100000,
         value: 350.00,
         buy: 'comprar',
         sell: 'vender'
@@ -60,7 +60,7 @@ const AvaliableStock =
     {
         id: 7,
         name: 'Alibaba',
-        quantity: 1,
+        quantity: 100000,
         value: 350.00,
         buy: 'comprar',
         sell: 'vender'
@@ -68,7 +68,7 @@ const AvaliableStock =
     {
         id: 8,
         name: 'Intel',
-        quantity: 1,
+        quantity: 100000,
         value: 350.00,
         buy: 'comprar',
         sell: 'vender'
@@ -76,7 +76,7 @@ const AvaliableStock =
     {
         id: 9,
         name: 'Nvidia',
-        quantity: 1,
+        quantity: 100000,
         value: 350.00,
         buy: 'comprar',
         sell: 'vender'
@@ -99,11 +99,14 @@ const AvaliableStock =
         console.log('newArrayuserStocks', newStocks);
     }
     const handleSell = (stock) => {
-        // Save in userStocks And Local Storage
-        const newUserStocks = [...userStocks, stock];
+      const newUserStocks = [...userStocks, stock];
         setUserStocks(newUserStocks);
         console.log('userStocks', newUserStocks);
         // Remove from stocks
+        const newStocks = stocks.filter(s => s.id !== stock.id);
+        setStocks(newStocks);
+        console.log('newArrayuserStocks', newStocks);
+        localStorage.setItem('userStocks', JSON.stringify(newUserStocks));
     }
 
 
