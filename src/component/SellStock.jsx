@@ -63,23 +63,29 @@ const SellStock = props => {
     function handleSell() {
         const stockQuantity = userQuantityToSell;
         const buyedStockQuantity = buyedStock.reduce((acc, stock) => acc + stock.quantity);
-        if (userQuantityToSell > buyedStockQuantity) {
+        if (buyedStockQuantity.quantity < stockQuantity) {
             setShowAlertDanger(true);
             console.log('Quantidade de ações que você deseja vender é maior que a quantidade de ações que você possui');
         }
         else {
-            console.log(userQuantityToSell, buyedStockQuantity);
+            console.log(userQuantityToSell + 'Quantidade de ações que você deseja vender');
+            console.log(buyedStockQuantity.quantity)
             // remove 1 quantity from buyedStock with same id as userStock
             const newBuyedStock = buyedStock.map(stock => {
                 if (stock.id === stock.id) {
                     stock.quantity = stock.quantity - stockQuantity;
+                    stock.value = stock.value - userPriceToSell;
                 }
                 return stock;
             }
             );
             setBuyedStock(newBuyedStock);
             localStorage.setItem('buyedStock', JSON.stringify(newBuyedStock));
-            // remove 1 quantity from userStock with same id as userStock
+            // remove balance from userBalance
+            const newUserBalance = userBalance + userPriceToSell;
+            setUserBalance(newUserBalance);
+            localStorage.setItem('userBalance', JSON.stringify(newUserBalance));
+            
 
         }
     }
@@ -130,9 +136,19 @@ const SellStock = props => {
                          </tr>
                      </thead>
                      <tbody>
-                        {
+                        
+                        {buyedStock.length === 0 ?
+                            <tr>
+                                <td colSpan="3">
+                                    <Alert variant="warning">
+                                        Você não possui ações para vender!
+                                    </Alert>
+                                </td>
+                            </tr>
+                            :
+                            
                             // show only buyedStock with id equal to userStocks
-                            buyedStock.map(stock => {
+                            buyedStock.filter(stock => stock.quantity > 0).map(stock => {
                                 if (stock.id === userStocks[0].id) {
                                     return (
                                         <tr key={stock.id}>
