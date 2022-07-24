@@ -63,23 +63,50 @@ const SellStock = props => {
     function handleSell() {
         const stockQuantity = userQuantityToSell;
         const buyedStockQuantity = buyedStock.reduce((acc, stock) => acc + stock.quantity);
-        if (userQuantityToSell > buyedStockQuantity) {
+        if (buyedStockQuantity.quantity < stockQuantity || buyedStockQuantity.quantity === "undefined") {
             setShowAlertDanger(true);
+            setTimeout(() => {
+                setShowAlertDanger(false);
+            }
+            , 3000);
             console.log('Quantidade de ações que você deseja vender é maior que a quantidade de ações que você possui');
         }
+        else if (stockQuantity > buyedStock.quantity) {
+          setShowAlertDanger(true);
+          setTimeout(() => {
+            setShowAlertDanger(false);
+          }
+          , 3000);
+        }
         else {
-            console.log(userQuantityToSell, buyedStockQuantity);
+          console.log('reduce', buyedStock.reduce((acc, stock) => acc + stock.quantity, 0))
+         
+          console.log('Quantidade de ações que você deseja vender', stockQuantity,'byedstock', buyedStock.quantity);
+            console.log(userQuantityToSell + 'Quantidade de ações que você deseja vender');
+            console.log(buyedStockQuantity.quantity)
             // remove 1 quantity from buyedStock with same id as userStock
-            const newBuyedStock = buyedStock.map(stock => {
+            const index = buyedStock.findIndex(stock => stock.id === stock.id);
+            const newBuyedStock = 
+            buyedStock.filter(stock => stock.id === userStocks[index].id)
+            .map(stock => {
                 if (stock.id === stock.id) {
                     stock.quantity = stock.quantity - stockQuantity;
+                    stock.value = stock.value - userPriceToSell;
                 }
                 return stock;
             }
             );
             setBuyedStock(newBuyedStock);
             localStorage.setItem('buyedStock', JSON.stringify(newBuyedStock));
-            // remove 1 quantity from userStock with same id as userStock
+            // remove balance from userBalance
+            const newUserBalance = userBalance + userPriceToSell;
+            setUserBalance(newUserBalance);
+            localStorage.setItem('userBalance', JSON.stringify(newUserBalance));
+            setShowAlertSuccess(true);
+            setTimeout(() => {
+                setShowAlertSuccess(false);
+            }
+            , 3000);
 
         }
     }
@@ -91,6 +118,11 @@ const SellStock = props => {
           <Card>
              <Card.Header>
                  <Card.Title>
+                 <Link 
+                style={ { color: 'black' } }
+                to="/painel/">
+                    <FaArrowAltCircleLeft />
+                </Link>
                  <Alert
              show={showAlertSuccess}
              variant="success"
@@ -130,9 +162,19 @@ const SellStock = props => {
                          </tr>
                      </thead>
                      <tbody>
-                        {
+                        
+                        {buyedStock.length === 0 ?
+                            <tr>
+                                <td colSpan="3">
+                                    <Alert variant="warning">
+                                        Você não possui ações para vender!
+                                    </Alert>
+                                </td>
+                            </tr>
+                            :
+                            
                             // show only buyedStock with id equal to userStocks
-                            buyedStock.map(stock => {
+                            buyedStock.filter(stock => stock.quantity > 0).map(stock => {
                                 if (stock.id === userStocks[0].id) {
                                     return (
                                         <tr key={stock.id}>

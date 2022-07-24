@@ -8,10 +8,12 @@ import Balance from './pages/Balance';
 import BuyStock from './component/BuyStock';
 import Profile from './pages/Profile';
 import SellStock from './component/SellStock';
+import { AiOutlineHeart } from 'react-icons/ai';
 
 function App() {
 
   return (
+    <>
     <Provider store={store}>
       <Switch>
         <Route exact path="/" component={ Login } />
@@ -22,6 +24,26 @@ function App() {
         <Route exact path= "/painel/perfil" component={ Profile }  />
       </Switch>
     </Provider>
+    <div className="footer-bar">
+        <div className="container">
+            <div className="row">
+                <div className="col-md-12">
+                    <div className="footer-bar-content">
+                        <div className="footer-bar-content-left">
+                            <p>
+                                <span>
+                                    Design with <AiOutlineHeart /> by <a 
+                                    style={{textDecoration: 'none'}}
+                                    href="https://www.github.com/underewarrr">Rafhael Oliveira</a>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </>
   );
 }
 

@@ -9,13 +9,20 @@ export default function Login(props) {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    const [userToken, setUserToken] = useState('');
   
     const buttonDisabled = () => {
         const minPasswordLength = 6;   
         const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return !emailRegex.test(email) || password.length < minPasswordLength;
     }
+
+    const generateToken = () => {
+        const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        setUserToken(token);
+        localStorage.setItem('userToken', token);
+      }
+
 
     const handleLogin = (e) => {
     e.preventDefault();

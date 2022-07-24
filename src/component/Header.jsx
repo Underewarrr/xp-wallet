@@ -5,14 +5,16 @@ import { FaMoneyBillAlt } from 'react-icons/fa';
 import Button from 'react-bootstrap/Button';
 import { FaArrowAltCircleLeft, FaUserCircle } from 'react-icons/fa';
 import { BiLogOutCircle, BiReset } from 'react-icons/bi';
-
+import Link from 'react-router-dom/Link';
 import './styles/Header.css';
+import { Alert } from 'react-bootstrap';
 
-const Header = () => {
+const Header = (props) => {
 
 // get from localStorage and set to userEmail
 const [userEmail, setUserEmail] = useState('');
 const [userBalance, setUserBalance] = useState(0);
+const [resetSuccess, setResetSuccess] = useState(false);
 // get userBalance from localStorage
 
 // update  balance each time user add or remove balance
@@ -35,48 +37,45 @@ function pushToLogout () {
     localStorage.removeItem('userBalance');
     localStorage.removeItem('userStocks');
     localStorage.removeItem('buyedStock');
-    window.location.reload();
-
+    window.location.href = '/';
 }
   return (
     <Navbar>
     <Container>
       <Navbar.Brand href="">
-               
+      <Link 
+      to="/painel">   
       <img
-              onClick={
-                () => {
-                  window.location.href = '/painel';
-                }
-              }
-              style={{ cursor: 'pointer' }}
               alt=""
               src="https://logospng.org/download/xp-investimentos/logo-xp-investimentos-icon-1536.png"
               width="30"
               height="30"
               className="d-inline-block align-top"
-            /> Investimentos
+            /> 
               
                                            
+          </Link>
         <code><p>
-          <FaMoneyBillAlt 
-          onClick={
-            () => {
-              window.location.href = '/painel/investimentos/saldo';
-            }
-          }
-          style={{ color: 'black', cursor: 'pointer' }}
-          />
+          <Link
+          to="/painel/investimentos/saldo"
+          >
+          <FaMoneyBillAlt style={{ color: 'black'}}
+        />
+        </Link>
            {' '}Saldo R$ {userBalance.toFixed(2)}</p>
            <p>
           <BiReset 
           onClick={
             () => {
               localStorage.removeItem('userEmail');
-              localStorage.removeItem('userBalance');
-              localStorage.removeItem('userStocks');
-              localStorage.removeItem('buyedStock');
-              window.location.reload();
+    localStorage.removeItem('userBalance');
+    localStorage.removeItem('userStocks');
+    localStorage.removeItem('buyedStock');
+    setResetSuccess(true);
+    setTimeout(() => {
+      setResetSuccess(false);
+    }
+    , 3000);
             }
           }
           style={{ color: 'black', cursor: 'pointer' }}
@@ -87,19 +86,23 @@ function pushToLogout () {
       </Navbar.Brand>
       <Navbar.Toggle />
       <Navbar.Collapse className="justify-content-end">
+      <Alert variant="success" show={resetSuccess}>
+          <Alert.Heading>Sucesso!</Alert.Heading>
+          <p>
+            LocalStorage foi resetado com sucesso!
+          </p>
+        </Alert>
         <Navbar.Text>
+          <Link to="/painel/perfil">
           <FaUserCircle 
-          onClick={
-            () => {
-              window.location.href = '/painel/perfil';
-            }
-          }
           style={{ color: 'black', cursor: 'pointer' }}
           /> <p
           className='text-muted'
           id='userEmail'
           >{userEmail}</p>
+          </Link>
         </Navbar.Text>                   
+        
       </Navbar.Collapse>
      <Navbar.Collapse className="justify-content-end">
         <Navbar.Text>
@@ -115,7 +118,7 @@ function pushToLogout () {
         </Navbar.Text>
       </Navbar.Collapse>
     </Container>
-    
+
   </Navbar>
   )
 }

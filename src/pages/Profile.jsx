@@ -2,6 +2,8 @@ import {React, useState} from 'react'
 import PropTypes from 'prop-types'
 import Header from '../component/Header'
 import { Card, Form, Button } from 'react-bootstrap'
+import Link from 'react-router-dom/Link'
+import { FaArrowAltCircleLeft } from 'react-icons/fa'
 
 const Profile = props => {
 
@@ -20,6 +22,11 @@ const Profile = props => {
     <Header />
     <Card>
         <Card.Header>
+        <Link 
+                style={ { color: 'black' } }
+                to="/painel/">
+                    <FaArrowAltCircleLeft />
+                </Link>
             <h4>Editar sua conta</h4>
         </Card.Header>
         <Card.Body>
