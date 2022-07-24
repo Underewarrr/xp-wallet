@@ -69,31 +69,35 @@ const BuyStock = props => {
                         setShowAlertDanger(false);
                     }
                     , 3000);
-            }
-            // add value to buyedStock in Local Storage value
-            else {
-                setShowAlertSuccess(true);
-                    setTimeout(() => {
-                        setShowAlertSuccess(false);
-                    }
-                    , 3000);
                     
-                const stock = {
-                    id: cartStock[0].id,
-                    name: cartStock[0].name,
-                    quantity: userQuantityToBuy,
-                    value: userPriceToBuy
-                }
-            const newBuyedStock = [...buyedStock, stock];
-            console.log('buyedStock', buyedStock);
-            setBuyedStock(newBuyedStock);
-                localStorage.setItem('buyedStock', JSON.stringify(newBuyedStock));
-                console.log('buyedStock', newBuyedStock);
-                buyedStock.splice(0, 1);
-                
             }
+            else {
+            // buy stock update quantity in buyedStock
+            const newBuyedStock = [...buyedStock];
+            const index = userStocks.findIndex(stock => stock.id === stock.id);
             const newUserBalance = userBalance - userPriceToBuy;
+            const newUserQuantityToBuy = userQuantityToBuy + userStocks[index].quantity;
+            const newUserStocksQuantity = userQuantityToBuy;
+            const newUserStocksValue = userStocks[index].value * userQuantityToBuy;
+            const newUserStocks = [...userStocks];
+            newUserStocks[index].quantity = newUserStocksQuantity;
+            newUserStocks[index].value = newUserStocksValue;
+            newBuyedStock.push(userStocks[index]);
+            setUserStocks(newUserStocks);
+            setUserBalance(newUserBalance);
+            setBuyedStock(newBuyedStock);
+            setUserQuantityToBuy(0);
+            setUserPriceToBuy(0);
+            localStorage.setItem('userStocks', JSON.stringify(newUserStocks));
             localStorage.setItem('userBalance', JSON.stringify(newUserBalance));
+            localStorage.setItem('buyedStock', JSON.stringify(newBuyedStock));
+            setShowAlertSuccess(true);
+            setTimeout(() => {
+                setShowAlertSuccess(false);
+            }
+            , 3000);
+        }
+
         }
 
     
